@@ -1,0 +1,20 @@
+{
+  "ornek1": {
+    "name": "ornek1",
+    "chain": "abstract",
+    "collection": "pengztracted-abstract",
+    "minPrice": 0.005,
+    "maxPrice": 0.009,
+    "type": "collectionoffer",
+    "offerTime": 900000,
+    "loopTime": 0,
+    "counterbid": {
+      "enabled": true,
+      "increment": 0.0001
+    },
+    "highOfferSkip": true,
+    "itemLimit": 1,
+    "status": "stopped",
+    "listenerSetup": false
+  }
+}

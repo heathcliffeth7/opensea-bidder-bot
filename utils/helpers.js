@@ -17,6 +17,12 @@ function parseTaskCommand(command) {
   if (collectionMatch) {
     result.chain = collectionMatch[1];
     result.collection = collectionMatch[2];
+    
+    // Chain doğrulama
+    const validChains = ['ethereum', 'polygon', 'sepolia', 'abstract'];
+    if (!validChains.includes(result.chain.toLowerCase())) {
+      console.warn(`⚠️ Bilinmeyen chain: ${result.chain}. Desteklenen chainler: ${validChains.join(', ')}`);
+    }
   }
   
   // Minimum fiyatı ayrıştır
@@ -38,22 +44,22 @@ function parseTaskCommand(command) {
   }
   
   // Trait bilgilerini ayrıştır (eğer varsa)
-  const traitMatch = command.match(/trait\s*:\s*([^:]+)\s*:\s*([^:\s]+)/i);
+  const traitMatch = command.match(/trait\s*:\s*([^\s]+)\s+traitvalue\s*:\s*([^\s]+)/i);
   if (traitMatch) {
     result.trait = traitMatch[1].trim();
     result.traitValue = traitMatch[2].trim();
   }
   
-  // Teklif süresini ayrıştır
-  const offerTimeMatch = command.match(/offertime\s*:\s*([0-9]+)\s*(min|hour|day|s|m|h|d)?/i);
+  // Teklif süresini ayrıştır - 15min, 1hr, 1d formatlarını destekler
+  const offerTimeMatch = command.match(/offertime\s*:\s*([0-9]+)(min|mins|hr|hrs|hour|hours|d|day|days|s|sec|secs|m|h)?/i);
   if (offerTimeMatch) {
     const value = parseInt(offerTimeMatch[1]);
     const unit = offerTimeMatch[2] ? offerTimeMatch[2].toLowerCase() : 'min';
     result.offerTime = parseTimeToMs(value, unit);
   }
   
-  // Döngü süresini ayrıştır
-  const loopTimeMatch = command.match(/looptime\s*:\s*([0-9]+)\s*(min|hour|day|s|m|h|d)?/i);
+  // Döngü süresini ayrıştır - 0min, 1hr, 1d formatlarını destekler
+  const loopTimeMatch = command.match(/looptime\s*:\s*([0-9]+)(min|mins|hr|hrs|hour|hours|d|day|days|s|sec|secs|m|h)?/i);
   if (loopTimeMatch) {
     const value = parseInt(loopTimeMatch[1]);
     const unit = loopTimeMatch[2] ? loopTimeMatch[2].toLowerCase() : 'min';
@@ -88,6 +94,16 @@ function parseTaskCommand(command) {
     result.tokenIdsFile = tokenIdMatch[1];
   }
   
+  // TokenIDList parametresini ayrıştır (virgülle ayrılmış token ID'ler)
+  const tokenIdListMatch = command.match(/tokenidlist\s*:\s*([0-9,\s]+)/i);
+  if (tokenIdListMatch) {
+    // Virgülle ayrılmış token ID'leri array'e çevir
+    result.tokenIdList = tokenIdListMatch[1]
+      .split(',')
+      .map(id => id.trim())
+      .filter(id => id.length > 0);
+  }
+  
   return result;
 }
 
@@ -100,15 +116,22 @@ function parseTaskCommand(command) {
 function parseTimeToMs(value, unit = 'min') {
   switch (unit.toLowerCase()) {
     case 's':
+    case 'sec':
+    case 'secs':
       return value * 1000;
     case 'm':
     case 'min':
+    case 'mins':
       return value * 60 * 1000;
     case 'h':
+    case 'hr':
+    case 'hrs':
     case 'hour':
+    case 'hours':
       return value * 60 * 60 * 1000;
     case 'd':
     case 'day':
+    case 'days':
       return value * 24 * 60 * 60 * 1000;
     default:
       return value * 60 * 1000; // Varsayılan olarak dakika
@@ -127,8 +150,25 @@ function formatPrice(price) {
     return price.toFixed(6);
   }
   
+  if (typeof price === 'string') {
+    // Wei formatında string ise ETH'e çevir
+    const priceNum = parseFloat(price);
+    if (priceNum > 1000000) { // Wei formatında
+      return (priceNum / 1e18).toFixed(6);
+    }
+    return priceNum.toFixed(6);
+  }
+  
   if (price.amount) {
     return parseFloat(price.amount).toFixed(6);
+  }
+  
+  if (price.value) {
+    const priceNum = parseFloat(price.value);
+    if (priceNum > 1000000) { // Wei formatında
+      return (priceNum / 1e18).toFixed(6);
+    }
+    return priceNum.toFixed(6);
   }
   
   return '0';

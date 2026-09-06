@@ -1,0 +1,3 @@
+!createtask ornek1
+!settask ornek1 abstract:pengztracted-abstract minprice:0.01 maxprice:0.015 type:tokenoffer offertime:15min looptime:2min counterbid on 0.0001 highofferskip on itemlimit 1 tokenidlist:16,50,896
+!starttask ornek1

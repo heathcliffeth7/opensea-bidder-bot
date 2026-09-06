@@ -31,6 +31,9 @@ Ethereumda opepen-editon koleksiyonunda  collectionoffer atar minprice:0.001 WET
 !settask örnek4 ethereum:opepen-edition minprice:0.001 maxprice:0.003 type:tokenoffer offertime:15 looptime:0min counterbid on 0.0001  highofferskip on itemlimit 1 , tokenid’ler  txt dosyası verilir ve txt dosyasındaki tokenidlere teker teker teklif atılır , looptime 0 olduğu için hepsine attıktan sonra tekrar yeniden başlar
 eğer teklif kabul edilirse itemlimit 1 olduğu için görev durur
 
+!settask ornek1 ethereum:gemesis minprice:0.02  maxprice:0.022 type:tokenoffer offertime:15min looptime:0min counterbid on 0.0001 highofferskip on itemlimit 1 tokenidlist:16,50,896,653,478,96,85,108,963,588,963,485,763,418,125,698,453,789,362,789,413,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42
+txt dosyası oluşturulmadan
+
 Counterbid içinde teklif attığımız tokenleri izler eğer rakip teklif gelirse counterlar
 !starttask örnek2 diyince görevi başlatır 
 
@@ -57,3 +60,15 @@ https://docs.opensea.io/reference/get_offers
 https://docs.opensea.io/reference/get_trait_offers_v2
 https://docs.opensea.io/reference/get_order
 https://docs.opensea.io/reference/openapi-definition
+
+
+
+ABSTRACT RPC EKLEYECEĞİN ZAMAN BUNLARI KULLAN
+
+  - `ABSTRACT_RPC_URL`: `https://abstract-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY_1`
+  - `ABSTRACT_RPC_URL_2`: `https://abstract-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY_2`
+  - `ABSTRACT_RPC_URL_3`: `https://abstract-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY_3`
+
+  ABSTRACT CHAİN İD=2741
+  ABSTRAT WETH ADRESS=0x3439153EB7AF838Ad19d56E1571FBD09333C2809
+    zone: "0x000056F7000000EcE9003ca63978907a00FFD100", // Seaport 1.6 zone

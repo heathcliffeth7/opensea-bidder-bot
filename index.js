@@ -63,6 +63,20 @@ async function processCommand(command) {
           }
         }
         
+        // TokenIdList varsa tokenIds'e dönüştür (komuttan gelen liste)
+        if (parsedSettings.tokenIdList && parsedSettings.tokenIdList.length > 0) {
+          parsedSettings.tokenIds = parsedSettings.tokenIdList;
+          delete parsedSettings.tokenIdList; // Karışıklığı önlemek için
+          console.log(`${parsedSettings.tokenIds.length} adet token ID komuttan alındı.`);
+          
+          // Duplicate token'ları temizle
+          const uniqueTokens = [...new Set(parsedSettings.tokenIds)];
+          if (uniqueTokens.length < parsedSettings.tokenIds.length) {
+            console.log(`Duplicate token'lar temizlendi: ${parsedSettings.tokenIds.length} -> ${uniqueTokens.length}`);
+            parsedSettings.tokenIds = uniqueTokens;
+          }
+        }
+        
         const setResult = taskManager.setTaskSettings(settingTaskName, parsedSettings);
         console.log(setResult.message);
         
@@ -150,7 +164,10 @@ async function processCommand(command) {
     }
   } catch (error) {
     console.error(`Komut işlenirken hata oluştu: ${error.message}`);
-    console.error(error.stack);
+    // Stack trace'i sadece debug modda göster
+    if (process.env.DEBUG) {
+      console.error(error.stack);
+    }
   }
 }
 
