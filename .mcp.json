@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "ProjectOpenSea": {
+      "type": "sse",
+      "url": "https://gitmcp.io/ProjectOpenSea/stream-js"
+    },
+    "OpenSeaSeaport": {
+      "type": "sse",
+      "url": "https://gitmcp.io/ProjectOpenSea/seaport"
+    },
+    "OpenSeaSeaportJS": {
+      "type": "sse",
+      "url": "https://gitmcp.io/ProjectOpenSea/seaport-js"
+    },
+    "OpenSeaJS": {
+      "type": "sse",
+      "url": "https://gitmcp.io/ProjectOpenSea/opensea-js"
+    },
+    "OpenSeaStream": {
+      "type": "sse",
+      "url": "https://gitmcp.io/ProjectOpenSea/stream-js"
+    }
+  }
+}
